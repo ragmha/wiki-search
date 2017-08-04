@@ -2,10 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AppService } from './app.service';
 
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/switchMap';
 
 @Component({
   selector: 'app-root',
@@ -19,10 +15,8 @@ export class AppComponent implements OnInit {
   constructor(private service: AppService) {}
 
   ngOnInit() {
-    this.term$
-      .debounceTime(400)
-      .distinctUntilChanged()
-      .switchMap(term => this.service.search(term))
+    this.service
+      .search(this.term$)
       .subscribe(results => (this.items = results));
   }
 }
