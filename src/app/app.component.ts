@@ -5,6 +5,7 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/mergeMap';
 
 @Component({
   selector: 'app-root',
@@ -21,9 +22,7 @@ export class AppComponent implements OnInit {
     this.term$
       .debounceTime(400)
       .distinctUntilChanged()
-      .map(term => this.service.search(term))
-      .subscribe(obsResults => {
-        obsResults.subscribe(results => (this.items = results));
-      });
+      .flatMap(term => this.service.search(term))
+      .subscribe(results => (this.items = results));
   }
 }
